@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <fcntl.h>       /* For O_* constants */
 #include <string.h>
+#include <stdio.h>
 
 //int main(int argc, char **argv)
 //{
@@ -28,11 +29,14 @@
 int main(int argc, char **argv)
 {
     // int fd = shm_open("posixsm", O_CREAT | O_RDWR, 0666);
-	int fd = open("/dev/shm/share", O_RDWR);
+	int fd = open("/dev/shm/share", O_CREAT | O_RDWR);
+	printf("fd = %d\n", fd);
     ftruncate(fd, SHM_SIZE);
     char *p = mmap(NULL, SHM_SIZE,
                    PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-    memset(p, 'A', SHM_SIZE);
+
+	printf("p = %p\n", p);
+	memset(p, 'A', SHM_SIZE);
     munmap(p, SHM_SIZE);
     return 0;
 }

@@ -1,3 +1,6 @@
 sr/sw: SysV shared memory implementation
 p-: POSIX shared memory implementation
 q-: for testing QEMU's SHM implementation
+
+$ ./qsw
+$ sudo ./qsr

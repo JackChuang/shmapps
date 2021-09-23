@@ -11,7 +11,7 @@
 
 int main(int argc, char **argv)
 {
-    key_t key = ftok("/dev/shm/myshm", 0);
+    key_t key = ftok("/dev/shm/myshm", 0); // "path" to key_t
     int shm_id = shmget(key, 0x400000, IPC_CREAT | 0666);
     char *p = (char *) shmat(shm_id, NULL, 0);
     

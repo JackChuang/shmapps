@@ -31,14 +31,17 @@ int main(int argc, char **argv)
 {
     //int fd = shm_open("posixsm", O_RDONLY, 0666);
     int fd = open("/dev/shm/share", O_RDWR);
+	printf("fd = %d\n", fd);
 	ftruncate(fd, SHM_SIZE);
     char *p = mmap(NULL, SHM_SIZE,
-                   PROT_READ, MAP_SHARED, fd, 0);  
+                   PROT_READ, MAP_SHARED, fd, 0);
+	printf("p = %p\n", p);
     printf("firt %c %c %c %c ~ last %c %c %c %c size %d\n",
 			p[0], p[1], p[2], p[3],
 			p[SHM_SIZE - 4], p[SHM_SIZE - 3],
 			p[SHM_SIZE - 2], p[SHM_SIZE - 1], SHM_SIZE);
     munmap(p, SHM_SIZE);
+	close(fd);
     return 0;
 }
 
