@@ -29,7 +29,8 @@
 int main(int argc, char **argv)
 {
     // int fd = shm_open("posixsm", O_CREAT | O_RDWR, 0666);
-	int fd = open("/dev/shm/share", O_CREAT | O_RDWR);
+	//int fd = open("/dev/shm/share", O_CREAT | O_RDWR);
+	int fd = open("/dev/shm/share", O_CREAT | O_RDWR, 0755);
 	printf("fd = %d\n", fd);
     ftruncate(fd, SHM_SIZE);
     char *p = mmap(NULL, SHM_SIZE,
