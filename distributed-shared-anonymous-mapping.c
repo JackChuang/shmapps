@@ -32,7 +32,7 @@
 #error Does not support this architecture
 #endif
 
-int popcorn_dshm_mmap(unsigned long addr, unsigned long len,
+long int popcorn_dshm_mmap(unsigned long addr, unsigned long len,
 					unsigned long prot, unsigned long flags,
 					unsigned long fd, unsigned long pgoff) {
 	return syscall(SYSCALL_PCN_DSHM_MMAP, addr, len, prot, flags, fd, pgoff);
@@ -40,14 +40,14 @@ int popcorn_dshm_mmap(unsigned long addr, unsigned long len,
 
 int main()
 {
-    int pid;
+    int pid, i;
     char *map = NULL;
 
 	// TODO: add pcn syscall
     printf("This is parent process.\n");
     //map = mmap(NULL, SHM_SIZE_1G, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
     //map = mmap((void*)SHM_START, SHM_SIZE_1G, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-    map = popcorn_dshm_mmap(SHM_START, SHM_SIZE_1G, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    map = (char*)popcorn_dshm_mmap(SHM_START, SHM_SIZE_1G, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 	if (map)
 		printf("mmap *ptr = %p size = 0x%x (sizeof map 0x%lx)\n", map, SHM_SIZE_1G, sizeof(map));
 	else {
@@ -64,35 +64,49 @@ int main()
 		exit(-1);
 	}
 
-    map[0] = 'h';
-    map[1] = 'l';
-    printf("*mmap = %s\n", map);
+    //map[0] = '0';
+    //map[1] = '1';
+    //printf("*mmap = %s\n", map);
+	//sleep(5);
 
-	// TODO: change it to distributed
-    if((pid = fork()) == -1) {
-        perror("fork");
-    }
-
-	// TODO: remote write first
-    if(pid == 0) { /* child writes first*/
-        printf("[child] This is child process.\n");
-        printf("[child] *mmap = %s\n", map);
-
-        map[2] = 'l';
-        printf("[child] *mmap = %s\n", map);
-        //getchar(); // pause
-		if (map)
-			munmap(map, SHM_SIZE_1G);
-        exit(0);
-    }
-
-	// TODO: origin read after
-    if(pid > 0) { /* parent reads after */
-        waitpid(pid, NULL, 0);
-        printf("*mmap %s\n", map);
-    }
-
-	if (map)
+	for (i = 0; i < 30; i+=2) {
+    	map[i] = i + '0';
+		//printf("(%d) %d = %c\n", i, map[i], map[i]);
+		printf("(%d) *mmap = %s\n", i, map);
+		sleep(1);
+	}
+//	// TODO: change it to distributed
+//    if((pid = fork()) == -1) {
+//        perror("fork");
+//    }
+//
+//	// TODO: remote write first
+//    if(pid == 0) { /* child writes first*/
+//        printf("[child] This is child process.\n");
+//        printf("[child] *mmap = %s\n", map);
+//
+//        map[2] = '3';
+//        printf("[child] *mmap = %s\n", map);
+//        //getchar(); // pause
+//		if (map)
+//			munmap(map, SHM_SIZE_1G);
+//        exit(0);
+//    }
+//
+//	// TODO: origin read after
+//    if(pid > 0) { /* parent reads after */
+//        waitpid(pid, NULL, 0);
+//        printf("*mmap %s\n", map);
+//    }
+//
+	if (map) {
+		printf("munmap()\n");
 		munmap(map, SHM_SIZE_1G);
+		map = NULL;
+	}
+
+	printf("sleep 10s and exit\n");
+	sleep(10);
+	printf("exit\n");
     return 0;
 }
