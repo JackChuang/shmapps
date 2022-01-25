@@ -98,8 +98,8 @@ int main()
 
 		// debug first 100 and all / 100
 		static unsigned long cnt = 0;
-		if (cnt <= 100 || cnt % 100 == 0) {
-			printf("\t#%lu/%lu\n", i, SHM_SIZE);
+		if (cnt <= 100 || cnt % (SHM_SIZE / 100) == 0) {
+			printf("\t[dbg] #%lu/%lu (<100 || =SHM_SIZE/100**)\n", i, SHM_SIZE);
 		}
 		cnt++;
     }
