@@ -21,7 +21,7 @@ CFLAGS += -DDEBUG -g -Wall $(POPCORN_INC_PATH)
 LIBS = $(LIBSHM)
 
 TARGETS = sr sw psr psw qsr qsw \
-		private-anonymous-mapping shared-anonymous-mapping distributed-shared-anonymous-mapping distributed-shared-anonymous-mapping-manypg-1g distributed-shared-anonymous-mapping-manypg-8g
+		private-anonymous-mapping shared-anonymous-mapping distributed-shared-anonymous-mapping distributed-shared-anonymous-mapping-manypg-1g distributed-shared-anonymous-mapping-manypg-8g distributed-shared-anonymous-mapping-manypg-8g-sync-server distributed-shared-anonymous-mapping-manypg-8g-sync-client
 OBJDUMPS =
 
 all: $(TARGETS) $(OBJDUMPS)
