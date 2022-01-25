@@ -88,9 +88,10 @@ int main()
 	sleep(3);
 
     /* Sync */
+	printf("sync bit init (set 0)\n");
 	*map = 0;
 	printf("sync wait\n");
-	while (*map == 0) ;
+	while (*map == 0) { ; }
 	// *map == 1
 
     /* Random write start */
