@@ -51,7 +51,7 @@ long int popcorn_dshm_munmap(unsigned long addr, size_t len) {
 
 int main()
 {
-    int i;
+    unsigned long i;
     char *map = NULL;
 
     printf("This is parent process. Request addr 0x%lx size 0x%lx = %ldM\n",
@@ -92,8 +92,16 @@ int main()
         //printf("ofs %lu\n", ofs);
         map[ofs] = '0' + (ofs % 26);
 
+		// debug all
         //printf("(%d) *mmap = %s\n", i, map);
         //sleep(1);
+
+		// debug first 100 and all / 100
+		static unsigned long cnt = 0;
+		if (cnt <= 100 || cnt % 100 == 0) {
+			printf("\t#%lu/%lu\n", i, SHM_SIZE);
+		}
+		cnt++;
     }
     printf("Random write done sleep 10s\n");
     sleep(10);
