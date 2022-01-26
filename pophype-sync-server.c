@@ -97,13 +97,14 @@ int main()
 	printf("[1 recv] *map = %c %d (GO HOME)\n", *map, *map);
 
 
-    sleep(10);
-
-	if (map) {
-		printf("popcorn_dshm_munmap()\n");
-		popcorn_dshm_munmap((unsigned long)map, SHM_SIZE);
-		map = NULL;
-	}
+	printf("all done. sleep 5s\n");
+    sleep(5);
+	printf("skip munmap...\n");
+	//if (map) {
+	//	printf("popcorn_dshm_munmap()\n");
+	//	popcorn_dshm_munmap((unsigned long)map, SHM_SIZE);
+	//	map = NULL;
+	//}
 
 	printf("sleep 10s and exit\n");
 	sleep(10);
