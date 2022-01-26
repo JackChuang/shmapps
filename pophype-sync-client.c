@@ -85,15 +85,16 @@ int main()
 
     /* Sync */
 	printf("sync bit init (sleep5)\n");
+	*map = 0; // W
 	sleep(5);
 	printf("sync wait\n");
-	while (*map != 0) {
-		printf("[!0 wait] *map = %c %d\n", *map, *map);
+	while (*map != 0) { // R
+		printf("[!0 wait] *map = %c %d\n", *map, *map); // R
 		sleep(1);
 	}
 	// *map == 0
-    *map = 1;	
-	printf("[1 notify] *map = %c %d\n", *map, *map);
+    *map = 1; // W
+	printf("[1 notify] *map = %c %d\n", *map, *map); // R
 
 
     printf("all done. sleep 5s\n");
