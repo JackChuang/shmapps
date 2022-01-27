@@ -86,7 +86,7 @@ int main()
 
     /* Sync */
 	printf("sync bit init (sleep5)\n");
-	*map = 0; // W // works
+	//*map = 0; // W // works
 	sleep(5);
 	printf("sync wait\n");
 	while (*map != 0) { // R
